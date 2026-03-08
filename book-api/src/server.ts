@@ -5,7 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { loggerMiddleware } from './middlewares/logger.js';
 
-dotenv.config({ path: './src/.env' });
+dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT;
 
@@ -18,5 +18,5 @@ app.use(express.json());
 app.use('/api/books', bookRoutes);
 
 app.listen(PORT, () => {
-  console.log(' Server is running!');
+  console.log(`Server is running on port ${PORT}`);
 });
