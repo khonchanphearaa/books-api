@@ -1,13 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import type { Application } from 'express';
 import bookRoutes from './routes/bookRoute.js';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { loggerMiddleware } from './middlewares/logger.js';
-
-dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT;
+
 
 // Middleware
 app.use(cors());
