@@ -6,3 +6,23 @@ services:
       - "3000:3000" 
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/bookdb?schema=public
+    depends_on:
+      - db
+
+  db: 
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=bookdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+
+volumes:
+  db_data:
