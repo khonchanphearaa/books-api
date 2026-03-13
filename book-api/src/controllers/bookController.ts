@@ -1,9 +1,7 @@
 import type { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
+import prisma from '../utils/prisma.js';
+import { sendResponse } from '../utils/response.js';
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
 
 /* Get all books */
 export const getAllBooks = async (req: Request, res: Response) =>{
@@ -11,10 +9,7 @@ export const getAllBooks = async (req: Request, res: Response) =>{
         include: { category: true }
     });
 
-    res.status(200).json({
-        message: 'Get books success',
-        allBooks
-    })
+    return sendResponse(res, 200, 'Get books success', allBooks);
 }
 
  
@@ -27,9 +22,9 @@ export const getBookById = async (req: Request, res: Response) =>{
     });
 
     if (!bookId) {
-        return res.status(404).json({ message: 'Book not found' });
+        return sendResponse(res, 404, 'Book not found');
     }
-    return res.json(bookId);
+    return sendResponse(res, 200, 'Get book by id success', bookId);
 }
 
 /* Add a new book */
@@ -40,12 +35,9 @@ export const addBook = async (req: Request, res: Response) =>{
             data:{ title, price, author, cover, description, categoryId: Number(categoryId) },
             include: { category: true }
         });
-        res.status(201).json({
-            message: 'Create a book success',
-            newBook
-        })
+        return sendResponse(res, 201, 'Create a book success', newBook);
     } catch (error) {
-        res.status(500).json({error: 'Failed to create a book'});
+        return sendResponse(res, 500, 'Failed to create a book');
     }
 }
 
@@ -60,7 +52,7 @@ export const updateBook = async (req: Request, res: Response) => {
         });
 
         if (!existing) {
-            return res.status(404).json({ message: 'Book not found' });
+            return sendResponse(res, 404, 'Book not found');
         }
 
         const updatedBook = await prisma.book.update({
@@ -69,12 +61,9 @@ export const updateBook = async (req: Request, res: Response) => {
             include: { category: true }
         });
 
-        return res.status(200).json({
-            message: 'Update book success',
-            updatedBook
-        });
+        return sendResponse(res, 200, 'Update book success', updatedBook);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to update book' });
+        return sendResponse(res, 500, 'Failed to update book');
     }
 }
 
@@ -88,16 +77,16 @@ export const deleteBook = async (req: Request, res: Response) => {
         });
 
         if (!existing) {
-            return res.status(404).json({ message: 'Book not found' });
+            return sendResponse(res, 404, 'Book not found');
         }
 
         await prisma.book.delete({
             where: { id: parseInt(id as string, 10) }
         });
 
-        return res.status(200).json({ message: 'Delete book success' });
+        return sendResponse(res, 200, 'Delete book success');
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to delete book' });
+        return sendResponse(res, 500, 'Failed to delete book');
     }
 }
 
