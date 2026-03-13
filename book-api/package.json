@@ -1,5 +1,5 @@
 {
-  "name": "@phearaa/book-api",
+  "name": "@phearadevx1/book-api",
   "version": "1.0.0",
   "main": "dist/server.js",
   "types": "dist/server.d.ts",
