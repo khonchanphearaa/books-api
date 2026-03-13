@@ -1,10 +1,6 @@
 import type { Request, Response } from 'express';
 import { sendResponse } from '../utils/response.js';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
+import prisma from '../utils/prisma.js';
 
 /* Create a new category */
 export const createCategory = async (req: Request, res: Response) => {
@@ -37,7 +33,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
             where: { id: parseInt(id as string, 10) },
         })
         if (!category) {
-            return sendResponse(res, 404, 'Create not found')
+            return sendResponse(res, 404, 'Category not found')
         }
 
         return sendResponse(res, 200, 'Get category by id success', category);
