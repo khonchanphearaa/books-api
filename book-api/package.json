@@ -1,15 +1,30 @@
 {
-  "name": "book-api",
+  "name": "@phearaa/book-api",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "dist/server.js",
+  "types": "dist/server.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    }
+  },
+  "files": [
+    "dist",
+    "prisma"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": ["book", "api", "prisma", "typescript"],
   "author": "Khonchanphearaa",
   "license": "MIT",
   "description": "A simple RESTful API for managing a collection of books, built with Express and TypeScript.",

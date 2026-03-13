@@ -15,6 +15,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "esModuleInterop": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -38,5 +39,5 @@
     "skipLibCheck": true,
   },
   "include": ["src/server.ts", "src/types/env.d.ts", "src/routes/*.ts", "src/middlewares/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
