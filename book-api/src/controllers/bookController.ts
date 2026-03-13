@@ -7,7 +7,10 @@ const prisma = new PrismaClient({ adapter });
 
 /* Get all books */
 export const getAllBooks = async (req: Request, res: Response) =>{
-    const allBooks = await prisma.book.findMany();
+    const allBooks = await prisma.book.findMany({
+        include: { category: true }
+    });
+
     res.status(200).json({
         message: 'Get books success',
         allBooks
@@ -31,11 +34,12 @@ export const getBookById = async (req: Request, res: Response) =>{
 
 /* Add a new book */
 export const addBook = async (req: Request, res: Response) =>{
-    const {title, price, author, cover, description} = req.body;
+    const {title, price, author, cover, description, categoryId} = req.body;
     try {
         const newBook = await prisma.book.create({
-            data:{ title, price, author, cover, description }
-        })
+            data:{ title, price, author, cover, description, categoryId: Number(categoryId) },
+            include: { category: true }
+        });
         res.status(201).json({
             message: 'Create a book success',
             newBook
@@ -48,7 +52,7 @@ export const addBook = async (req: Request, res: Response) =>{
 /* Update a book */
 export const updateBook = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { title, price, author, cover, description } = req.body;
+    const { title, price, author, cover, description, categoryId } = req.body;
 
     try {
         const existing = await prisma.book.findUnique({
@@ -61,7 +65,8 @@ export const updateBook = async (req: Request, res: Response) => {
 
         const updatedBook = await prisma.book.update({
             where: { id: parseInt(id as string, 10) },
-            data: { title, price, author, cover, description }
+            data: { title, price, author, cover, description, categoryId },
+            include: { category: true }
         });
 
         return res.status(200).json({
