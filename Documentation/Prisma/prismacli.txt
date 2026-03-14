@@ -1,0 +1,24 @@
+    ++ Prisma ORM with PostgreSQL
+
+- npx prisma generate
+Updates the Prisma Client (the code you import)
+
+- npx prisma db pull
+Introspection: Reads the DB and updates your code
+
+- npx prisma db seed
+Runs your seed.ts file to add initial data.
+
+- npx prisma migrate deploy
+Applies all "pending" migrations to the database.
+
+- npx prisma migrate status
+status	Shows if your DB is behind or ahead of your code.
+
+
+- npx prisma migrate reset
+DELETES ALL DATA and restarts from zero
+
+
+- npx prisma studio
+Opens a browser GUI to view/edit your data (like TablePlus)
