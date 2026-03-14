@@ -1,0 +1,7 @@
+# Folder test book-api
+/tests
+
+dist/
+build/
+.next/
+out/
