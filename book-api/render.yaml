@@ -2,6 +2,7 @@ services:
   - type: web
     name: book-api
     runtime: docker
+    rootDir: book-api
     plan: free
     envVars:
       - key: DATABASE_URL
