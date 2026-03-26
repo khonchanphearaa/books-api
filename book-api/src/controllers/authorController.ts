@@ -80,7 +80,23 @@ export const authorController = {
         }
     },
 
-    /* Delete author nexting handler implementation.. */
+    async deleteAuthor(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            const existingAuthor = await prisma.author.findUnique({
+                where: { id: parseInt(id as string, 10) }
+            })
+            if (!existingAuthor) {
+                return res.status(404).json({ message: 'Author not found!' });
+            }
+            await prisma.author.delete({
+                where: { id: parseInt(id as string, 10) }
+            })
+            return sendResponse(res, 200, 'Delete author success');
+        } catch (error) {
+            return sendResponse(res, 400, 'Failed to delete author');
+        }
+    }
 }
 
 
