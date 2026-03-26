@@ -7,5 +7,6 @@ router.post('/', authorController.CreateAuthor);
 router.get('/', authorController.getAllAuthors);
 router.get('/:id', authorController.getAuthorById);
 router.put('/:id', authorController.updateAuthor);
+router.delete('/:id', authorController.deleteAuthor);
 
 export default router;
