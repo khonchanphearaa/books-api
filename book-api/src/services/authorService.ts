@@ -2,16 +2,14 @@ import { error } from 'node:console';
 import prisma from '../utils/prisma.js';
 import { Gender, Prisma } from '@prisma/client';
 
+import * as authModel from '../models/authModel.js';
+
 export const getAll = async () => {
-    return await prisma.author.findMany({
-        include: { _count: { select: { books: true } } }
-    })
+    return await authModel.getAll();
 }
 
 export const getById = async (id: string) => {
-    let author = await prisma.author.findUnique({
-        where: { id: parseInt(id as string, 10) },
-    })
+    let author = await authModel.getById(id);
     if (!author) {
         throw new Error('Author not found');
     }
@@ -19,9 +17,7 @@ export const getById = async (id: string) => {
 }
 
 export const update = async (id: string, data: { name: string; email: string; gender: any }) => {
-    let isExist = await prisma.author.findUnique({
-        where: { id: parseInt(id, 10) },
-    })
+    let isExist = await authModel.getById(id);
     if (!isExist) {
         throw new Error('Author not found');
     }
