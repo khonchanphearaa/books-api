@@ -1,4 +1,3 @@
-import { error } from 'node:console';
 import prisma from '../utils/prisma.js';
 import { Gender, Prisma } from '@prisma/client';
 
@@ -31,6 +30,50 @@ export const update = async (id: string, data: { name: string; email: string; ge
             }
         });
     } catch (error) {
+        if (error instanceof Prisma.PrismaClientValidationError) {
+            throw new Error('Invalid input. gender must be M, F, or UNKNOWN');
+        }
+        throw error;
+    }
+}
+
+export const remove = async (id: string) => {
+    let isExist = await authModel.getById(id);
+    if (!isExist) {
+        throw new Error('Author not found');
+    }
+    try {
+        return await prisma.author.delete({
+            where: { id: parseInt(id, 10) }
+        });
+    } catch (error) {
+            throw error;
+    }
+}
+
+export const create = async (data: { name: string; email: string; gender: any }) => {
+    if (!data.name || !data.email) {
+        throw new Error('Missing required fields: name, email');
+    }
+
+    const normalizedGender = data.gender ?? Gender.UNKNOWN;
+    if (!Object.values(Gender).includes(normalizedGender)) {
+        throw new Error('Invalid input. gender must be M, F, or UNKNOWN');
+    }
+
+    try {
+        const newAuthor = await prisma.author.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                gender: normalizedGender
+            }
+        });
+        return newAuthor;
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+            throw new Error('Email already exists');
+        }
         if (error instanceof Prisma.PrismaClientValidationError) {
             throw new Error('Invalid input. gender must be M, F, or UNKNOWN');
         }
