@@ -1,6 +1,6 @@
 {
-  "name": "@phearadevx1/book-api",
-  "version": "1.0.0",
+  "name": "@khonchanphearaa/book-api",
+  "version": "1.1.0",
   "main": "dist/server.js",
   "types": "dist/server.d.ts",
   "exports": {
@@ -14,7 +14,11 @@
     "prisma"
   ],
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khonchanphearaa/books-api.git"
   },
   "type": "module",
   "scripts": {
@@ -24,7 +28,12 @@
     "start": "node dist/server.js",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["book", "api", "prisma", "typescript"],
+  "keywords": [
+    "book",
+    "api",
+    "prisma",
+    "typescript"
+  ],
   "author": "Khonchanphearaa",
   "license": "MIT",
   "description": "A simple RESTful API for managing a collection of books, built with Express and TypeScript.",
